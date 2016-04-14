@@ -23,7 +23,7 @@
       <displayName>DataTorrent RTS</displayName>
       <comment>a YARN-native platform that enables stream and batch processing</comment>
       <version>3.3.0</version>
-       <components>
+      <components>
         <component>
           <name>DataTorrent-rts</name>
           <displayName>DataTorrent-rts</displayName>
@@ -33,7 +33,7 @@
           <commandScript>
             <script>scripts/dtrts_client.py</script>
             <scriptType>PYTHON</scriptType>
-            <timeout>1200</timeout>
+            <timeout>60000</timeout>
           </commandScript>
         </component>
       </components>
@@ -51,17 +51,10 @@
         </osSpecific>
       </osSpecifics>
 
-      <commandScript>
-        <script>scripts/dtrts_check.py</script>
-        <scriptType>PYTHON</scriptType>
-        <timeout>300</timeout>
-      </commandScript>
-
       <requiredServices>
         <service>HDFS</service>
         <service>YARN</service>
       </requiredServices>
-
     </service>
   </services>
 </metainfo>

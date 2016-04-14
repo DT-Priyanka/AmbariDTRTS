@@ -29,30 +29,34 @@ class DtRtsClient(Script):
     import params
     Execute('echo Installing packages > /tmp/mylogs.txt')
     env.set_params(params)
-    self.install_datatorrent_repo();
+    self.install_datatorrent_repo()
     self.install_packages(env)
     self.configure(env)
 
   def configure(self, env, upgrade_type=None):
     import params
     env.set_params(params)
-    
+
+  def stop(self, env):
+    print 'Stop the service'
+
+  def start(self, env):
+    import params
+    env.set_params(params)
+    print 'Start the service'
+
   def status(self, env):
-      import os
-      Execute('echo checking status')
-  
+    print 'Status of the service'
+
   def install_datatorrent_repo(self):
       import os
-      Execute('echo Importing repository')
       distribution = platform.linux_distribution()[0].lower()
       if distribution in ['centos', 'redhat'] and not os.path.exists('/etc/yum.repos.d/datatorrent.repo'):
           Execute('curl -o /etc/yum.repos.d/datatorrent.repo **changethis https://repos.fedorapeople.org/repos/dchen/apache-maven/datatorrent.repo')
       elif distribution in ['Ubuntu'] and not os.path.exists('/etc/apt/sources.list.d/datatorrent.list'):
           Execute('echo "deb https://www.datatorrent.com/downloads/repos/apt/ /" > /etc/apt/sources.list.d/datatorrent.list')
           Execute('wget -O - https://www.datatorrent.com/downloads/repos/apt/keyFile | apt-key add -')
-      
-  def get_stack_to_component(self):
-    return {"HDP": "dtrts-client"}
-  
+          Execute('apt-get update')
+
 if __name__ == "__main__":
   DtRtsClient().execute()
