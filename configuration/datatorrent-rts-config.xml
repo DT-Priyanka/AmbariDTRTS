@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+  <property>
+    <name>datatorrent.install_dir</name>
+    <value>/opt/datatorrent</value>
+    <description>Path as base installation directory.  Must be an absolute path.  Default: /opt/datatorrent</description>
+  </property>
+  <property>
+    <name>datatorrent.username</name>
+    <value>dtadmin</value>
+    <description>user account for installation.  Default: dtadmin</description>
+  </property>
+  <property>
+    <name>datatorrent.groupname</name>
+    <value>dtadmin</value>
+    <description>group for installation.  Default: dtadmin</description>
+  </property> 
+  <property>
+    <name>datatorrent.hadoop.path</name>
+    <value></value>
+    <description>location for hadoop executable.  Overrides defaults of HADOOP_PREFIX and PATH</description>
+  </property>
+  <!-- property>
+    <name>datatorrent.config_file.path</name>
+    <value></value>
+    <description>Full path to existing dt-site.xml file to use for new installation. Overrides default and previous dt-site.xml</description>
+  </property>
+  <property>
+    <name>datatorrent.environment_file.path</name>
+    <value></value>
+    <description>Full path to existing custom-env.sh file to use for new installation. Overrides default and previous custom-env.sh</description>
+  </property>
+  <property>
+    <name>datatorrent.gateway_address</name>
+    <value></value>
+    <description>DataTorrent Gateway listen address.  Port is required, but ip is optional.  Default: 0.0.0.0:9090</description>
+  </property-->
+</configuration>
