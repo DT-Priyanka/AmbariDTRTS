@@ -27,8 +27,8 @@
         <component>
           <name>DataTorrent-rts</name>
           <displayName>DataTorrent-rts</displayName>
-          <category>CLIENT</category>
-          <cardinality>0+</cardinality>
+          <category>MASTER</category>
+          <cardinality>1</cardinality>
           <versionAdvertised>true</versionAdvertised>
           <commandScript>
             <script>scripts/dtrts_client.py</script>
