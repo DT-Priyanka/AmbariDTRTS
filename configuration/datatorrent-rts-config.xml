@@ -18,8 +18,13 @@
   </property> 
   <property>
     <name>datatorrent.hadoop.path</name>
-    <value></value>
+    <value>${env.HADOOP_HOME}</value>
     <description>location for hadoop executable.  Overrides defaults of HADOOP_PREFIX and PATH</description>
+  </property>
+  <property>
+    <name>datatorrent.gateway_address</name>
+    <value>0.0.0.0:9090</value>
+    <description>DataTorrent Gateway listen address.  Port is required, but ip is optional.  Default: 0.0.0.0:9090</description>
   </property>
   <!-- property>
     <name>datatorrent.config_file.path</name>
@@ -30,10 +35,5 @@
     <name>datatorrent.environment_file.path</name>
     <value></value>
     <description>Full path to existing custom-env.sh file to use for new installation. Overrides default and previous custom-env.sh</description>
-  </property>
-  <property>
-    <name>datatorrent.gateway_address</name>
-    <value></value>
-    <description>DataTorrent Gateway listen address.  Port is required, but ip is optional.  Default: 0.0.0.0:9090</description>
   </property-->
 </configuration>

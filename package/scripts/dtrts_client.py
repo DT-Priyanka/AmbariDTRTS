@@ -22,7 +22,7 @@ Ambari Agent
 import sys
 import os
 import logging
-from resource_management import Script
+from resource_management import *
 
 class DtRtsClient(Script):
   def install(self, env):
@@ -52,7 +52,9 @@ class DtRtsClient(Script):
       import os
       distribution = platform.linux_distribution()[0].lower()
       if distribution in ['centos', 'redhat'] and not os.path.exists('/etc/yum.repos.d/datatorrent.repo'):
-          Execute('curl -o /etc/yum.repos.d/datatorrent.repo **changethis https://repos.fedorapeople.org/repos/dchen/apache-maven/datatorrent.repo')
+          Execute('curl -o /etc/yum.repos.d/datatorrent.repo https://www.datatorrent.com/downloads/repos/yum/repo/datatorrent-rts.repo')
+          Execute('curl -sO https://www.datatorrent.com/downloads/repos/apt/keyFile')
+          Execute('rpm --import keyFile')
       elif distribution in ['Ubuntu'] and not os.path.exists('/etc/apt/sources.list.d/datatorrent.list'):
           Execute('echo "deb https://www.datatorrent.com/downloads/repos/apt/ /" > /etc/apt/sources.list.d/datatorrent.list')
           Execute('wget -O - https://www.datatorrent.com/downloads/repos/apt/keyFile | apt-key add -')
