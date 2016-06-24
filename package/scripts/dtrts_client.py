@@ -27,11 +27,9 @@ from resource_management import *
 class DtRtsClient(Script):
   def install(self, env):
     import params
-    Execute('echo Installing packages > /tmp/mylogs.txt')
     env.set_params(params)
     self.install_datatorrent_repo()
     self.install_packages(env)
-    self.configure(env)
 
   def configure(self, env, upgrade_type=None):
     import params
@@ -43,6 +41,8 @@ class DtRtsClient(Script):
   def start(self, env):
     import params
     env.set_params(params)
+    installDir=params.datatorrent_install_dir
+    Execute('')
     print 'Start the service'
 
   def status(self, env):
