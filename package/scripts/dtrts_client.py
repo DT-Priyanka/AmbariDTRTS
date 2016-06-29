@@ -23,7 +23,9 @@ import sys
 import os
 import logging
 from resource_management import *
+from resource_management.libraries.functions.check_process_status import check_process_status
 from resource_management.libraries.resources.hdfs_resource import HdfsResource
+from resource_management.core.resources.service import Service
 
 class DtRtsClient(Script):
   def install(self, env):
@@ -38,17 +40,17 @@ class DtRtsClient(Script):
     env.set_params(params)
 
   def stop(self, env):
-    print 'Stop the service'
+    import params
+    env.set_params(params)
+    Service('dtgateway', action='stop')
 
   def start(self, env):
     import params
     env.set_params(params)
-    installDir=params.datatorrent_install_dir
-    Execute('')
-    print 'Start the service'
+    Service('dtgateway', action='start')
 
   def status(self, env):
-    print 'Status of the service'
+    check_process_status('/var/run/datatorrent/dtgateway.pid')
 
   def install_datatorrent_repo(self):
       import os
@@ -73,7 +75,9 @@ class DtRtsClient(Script):
                         action="create_on_execute",
                         owner=params.datatorrent_username,
                         group=params.datatorrent_groupname,
-                        mode=0755
+                        mode=0755,
+                        recursive_chown=True,
+                        recursive_chmod=True
                         )
 
 if __name__ == "__main__":
