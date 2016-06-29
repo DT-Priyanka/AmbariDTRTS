@@ -19,10 +19,10 @@
   <schemaVersion>2.0</schemaVersion>
   <services>
     <service>
-      <name>DT-RTS</name>
+      <name>Datatorrent-RTS</name>
       <displayName>DataTorrent RTS</displayName>
       <comment>a YARN-native platform that enables stream and batch processing</comment>
-      <version>3.3.0</version>
+      <version>3.4.0</version>
       <components>
         <component>
           <name>DataTorrent-rts</name>

@@ -26,18 +26,20 @@
     <value>0.0.0.0:9090</value>
     <description>DataTorrent Gateway listen address.  Port is required, but ip is optional.  Default: 0.0.0.0:9090</description>
   </property>
-  <property>
+  <property require-input="false">
     <name>datatorrent.config_file.path</name>
-    <value></value>
+    <display-name>Config File Path</display-name>
     <description>Full path to existing dt-site.xml file to use for new installation. Overrides default and previous dt-site.xml</description>
+    <value/>
     <value-attributes>
       <empty-value-valid>true</empty-value-valid>
     </value-attributes>
   </property>
-  <property>
+  <property require-input="false">
     <name>datatorrent.environment_file.path</name>
-    <value></value>
+    <display-name>Environment File Path</display-name>
     <description>Full path to existing custom-env.sh file to use for new installation. Overrides default and previous custom-env.sh</description>
+    <value/>
     <value-attributes>
       <empty-value-valid>true</empty-value-valid>
     </value-attributes>
