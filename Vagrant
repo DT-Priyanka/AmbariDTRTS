@@ -1,0 +1,129 @@
+$master_script = <<SCRIPT
+#!/bin/bash
+
+
+echo `date` Setting up keys for root
+mkdir /root/.ssh
+wget 192.168.2.177/testbed/keys/id_rsa -O /root/.ssh/id_rsa
+wget 192.168.2.177/testbed/keys/id_rsa.pub -O /root/.ssh/id_rsa.pub
+wget 192.168.2.177/testbed/keys/authorized_keys -O /root/.ssh/authorized_keys
+chmod 600 -R /root/.ssh
+#apt-get install curl -y
+
+# Download and move the Ambari repo bits to /etc/yum.repos.d
+wget http://public-repo-1.hortonworks.com/ambari/centos6/2.x/updates/2.2.0.0/ambari.repo
+mv ambari.repo /etc/yum.repos.d/
+#cd /etc/apt/sources.list.d
+#sudo wget http://public-repo-1.hortonworks.com/ambari/ubuntu12/2.x/updates/2.0.0/ambari.list
+ 
+#Check repo has been configured correctly
+yum repolist
+
+#Install Ambari
+yum -q -y install ambari-server
+
+#Default configuration
+ambari-server setup -s
+
+#Spin up Ambari
+ambari-server start
+
+SCRIPT
+
+$hosts_script = <<SCRIPT
+
+sudo yum -q -y install wget 
+sudo yum -q -y install ntp
+#sudo service ntp status
+sudo chkconfig ntpd on
+sudo service ntpd start
+
+echo `date` Setting up keys for root
+mkdir /root/.ssh
+wget 192.168.2.177/testbed/keys/id_rsa -O /root/.ssh/id_rsa
+wget 192.168.2.177/testbed/keys/id_rsa.pub -O /root/.ssh/id_rsa.pub
+wget 192.168.2.177/testbed/keys/authorized_keys -O /root/.ssh/authorized_keys
+chmod 600 -R /root/.ssh
+
+cat > /etc/hosts <<EOF
+127.0.0.1       localhost
+10.210.66.11   vm-hdp-node1
+10.210.66.12   vm-hdp-node2
+10.210.66.13   vm-hdp-node3
+10.210.66.14   vm-hdp-node4
+
+# The following lines are desirable for IPv6 capable hosts
+::1     ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+
+EOF
+SCRIPT
+
+Vagrant.configure("2") do |config|
+
+  # Define base image
+  config.vm.box = "centos64"
+  config.vm.box_url = "https://github.com/2creatives/vagrant-centos/releases/download/v6.4.2/centos64-x86_64-20140116.box"
+
+  # Manage /etc/hosts on host and VMs
+#  config.hostmanager.enabled = false
+#  config.hostmanager.manage_host = true
+#  config.hostmanager.include_offline = true
+#  config.hostmanager.ignore_private_ip = false
+
+  config.vm.define :master do |master|
+    master.vm.provider :virtualbox do |v|
+      v.name = "vm-hdp-node1"
+      v.customize ["modifyvm", :id, "--memory", "32768"]
+    end
+    master.vm.network :private_network, ip: "10.210.66.11"
+    master.vm.network :forwarded_port, guest: 8080, host: 8888
+    master.vm.network :forwarded_port, guest: 9090, host: 9099
+    master.vm.network :forwarded_port, guest: 9042, host: 9042
+    master.vm.hostname = "vm-hdp-node1"
+    master.vm.provision :shell, :inline => $hosts_script
+#    master.vm.provision :hostmanager
+    master.vm.provision :shell, :inline => $master_script
+  end
+
+  config.vm.define :slave1 do |slave1|
+    slave1.vm.box = "centos64"
+    slave1.vm.provider :virtualbox do |v|
+      v.name = "vm-hdp-node2"
+      v.customize ["modifyvm", :id, "--memory", "32768"]
+    end
+    slave1.vm.network :private_network, ip: "10.210.66.12"
+    slave1.vm.hostname = "vm-hdp-node2"
+    slave1.vm.provision :shell, :inline => $hosts_script
+#    slave1.vm.provision :hostmanager
+  end
+
+  config.vm.define :slave2 do |slave2|
+    slave2.vm.box = "centos64"
+    slave2.vm.provider :virtualbox do |v|
+      v.name = "vm-hdp-node3"
+      v.customize ["modifyvm", :id, "--memory", "32768"]
+    end
+    slave2.vm.network :private_network, ip: "10.210.66.13"
+    slave2.vm.hostname = "vm-hdp-node3"
+    slave2.vm.provision :shell, :inline => $hosts_script
+#    slave2.vm.provision :hostmanager
+  end
+
+  config.vm.define :slave3 do |slave3|
+    slave3.vm.box = "centos64"
+    slave3.vm.provider :virtualbox do |v|
+      v.name = "vm-hdp-node4"
+      v.customize ["modifyvm", :id, "--memory", "32768"]
+    end
+    slave3.vm.network :private_network, ip: "10.210.66.14"
+    slave3.vm.hostname = "vm-hdp-node4"
+    slave3.vm.provision :shell, :inline => $hosts_script
+#    slave3.vm.provision :hostmanager
+  end
+
+end
+
